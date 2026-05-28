@@ -1,30 +1,15 @@
 version: '3.8'
 
-networks:
-  calculadora-net:
-    driver: bridge
-
 services:
-  # ==========================================
-  # INTERFACE E ROTEAMENTO (API GATEWAY)
-  # ==========================================
   api-gateway:
     build: ./api-gateway
     container_name: api-gateway
     ports:
       - "8000:8000"
-    depends_on:
-      - soma
-      - subtracao
-      - multiplicacao
-      - divisao
     networks:
       - calculadora-net
 
-  # ==========================================
-  # MICROSSERVIÇOS DE OPERAÇÃO
-  # ==========================================
-  soma:
+  servico-soma:
     build: ./servico-soma
     container_name: servico-soma
     ports:
@@ -32,7 +17,7 @@ services:
     networks:
       - calculadora-net
 
-  subtracao:
+  servico-subtracao:
     build: ./servico-subtracao
     container_name: servico-subtracao
     ports:
@@ -40,7 +25,7 @@ services:
     networks:
       - calculadora-net
 
-  multiplicacao:
+  servico-multiplicacao:
     build: ./servico-multiplicacao
     container_name: servico-multiplicacao
     ports:
@@ -48,28 +33,11 @@ services:
     networks:
       - calculadora-net
 
-  divisao:
+  servico-divisao:
     build: ./servico-divisao
     container_name: servico-divisao
     ports:
       - "8004:8004"
-    networks:
-      - calculadora-net
-
-  # ==========================================
-  # INFRAESTRUTURA DE MONITORAMENTO (DASHBOARD)
-  # ==========================================
-  cadvisor:
-    image: gcr.io/cadvisor/cadvisor:v0.47.0
-    container_name: cadvisor
-    ports:
-      - "8080:8080"
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:ro
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-      - /dev/disk/:/dev/disk:ro
     networks:
       - calculadora-net
 
@@ -80,8 +48,6 @@ services:
       - "9090:9090"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
-    depends_on:
-      - cadvisor
     networks:
       - calculadora-net
 
@@ -90,9 +56,9 @@ services:
     container_name: grafana
     ports:
       - "3000:3000"
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin # Senha padrão para os testes
-    depends_on:
-      - prometheus
     networks:
       - calculadora-net
+
+networks:
+  calculadora-net:
+    driver: bridge

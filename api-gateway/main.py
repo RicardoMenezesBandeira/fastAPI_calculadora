@@ -11,10 +11,10 @@ app = FastAPI(
 # Mapeamento de onde cada microsserviço está rodando dentro da rede do Docker
 # Usamos o nome do serviço definido no docker-compose.yml como "hostname"
 SERVICOS_URL = {
-    "soma": "http://soma:8001/soma",
-    "subtracao": "http://subtracao:8002/subtracao",
-    "multiplicacao": "http://multiplicacao:8003/multiplicacao",
-    "divisao": "http://divisao:8004/divisao"
+    "soma": "http://servico-soma:8001/soma",
+    "subtracao": "http://servico-subtracao:8002/subtracao",
+    "multiplicacao": "http://servico-multiplicacao:8003/multiplicacao",
+    "divisao": "http://servico-divisao:8004/divisao"
 }
 
 # Modelo de dados que o Gateway espera receber do usuário
