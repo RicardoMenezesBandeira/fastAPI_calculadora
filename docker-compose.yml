@@ -41,14 +41,6 @@ services:
     networks:
       - calculadora-net
 
-  grafana:
-    image: grafana/grafana:latest
-    container_name: grafana
-    ports:
-      - "3000:3000"
-    networks:
-      - calculadora-net
-
 networks:
   calculadora-net:
     driver: bridge
